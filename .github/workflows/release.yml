@@ -1,0 +1,26 @@
+name: Release
+on:
+  push:
+    tags: ['v*.*.*']
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install libpcsclite-dev
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+      - name: Update environment
+        run: uv sync --no-dev --group release --locked
+      - name: Build distributions
+        run: uv build --no-create-gitignore
+      - name: Generate release notes
+        run: uv run keepachangelog show ${GITHUB_REF_NAME#v} >$RUNNER_TEMP/release-notes.md
+      - name: Create release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release create --notes-file $RUNNER_TEMP/release-notes.md $GITHUB_REF_NAME dist/*
