@@ -1,0 +1,56 @@
+[build-system]
+requires = ["uv_build>=0.11.6,<0.12"]
+build-backend = "uv_build"
+
+[project]
+name = "nfc-labeler"
+version = "0.0.0"
+description = "Generates 3D printer filament labels for Santek EZ Sign displays"
+readme = "README.md"
+requires-python = ">=3.12"
+license = "BSD-2-Clause"
+keywords = ["3d-filament", "3d-printing", "e-ink", "e-paper", "label", "nfc", "nfc-tag"]
+classifiers = [
+    "Development Status :: 1 - Planning",
+    "Environment :: Console",
+    "Intended Audience :: Manufacturing",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Utilities",
+]
+dependencies = [
+    "click~=8.0",
+    "nfc-eink",
+    "pillow~=12.0",
+    "qrcode[pil]~=8.0",
+    "requests~=2.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/sstallion/nfc-labeler"
+Repository = "https://github.com/sstallion/nfc-labeler.git"
+Issues = "https://github.com/sstallion/nfc-labeler/issues"
+Changelog = "https://github.com/sstallion/nfc-labeler/blob/master/CHANGELOG.md"
+
+[project.scripts]
+nfc-labeler = "nfc_labeler.cli:cli"
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I"]
+
+[tool.uv.sources]
+nfc-eink = { git = "https://github.com/sstallion/nfc-eink.git" }
+
+[dependency-groups]
+dev = [
+    "prek>=0.3.0",
+    "pytest~=9.0",
+    "ruff>=0.15.0",
+]
+release = [
+    "keepachangelog>=2.0.0",
+]
